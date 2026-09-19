@@ -1,0 +1,767 @@
+<title>Prüfungstraining Ökonomie</title>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#f7f5ef; --bg-alt:#eef1ea; --surface:#ffffff; --surface-alt:#eef4ef;
+    --ink:#16241f; --ink-2:#4b5851; --ink-mute:#7c887f;
+    --accent:#1f5c4a; --accent-strong:#153d31; --accent-soft:#e3efe8;
+    --amber:#a3740f; --amber-strong:#7a5709; --amber-soft:#fbf1da;
+    --border:#dfe1d8; --border-strong:#c7cec4;
+    --good:#0ca30c; --good-soft:#e5f5df; --good-ink:#0d5c11;
+    --bad:#d03b3b; --bad-soft:#fbe8e6; --bad-ink:#8a1f1f;
+    --shadow:0 1px 2px rgba(22,36,31,.06), 0 8px 24px rgba(22,36,31,.06);
+    --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg:#0f1713; --bg-alt:#131b17; --surface:#171f1a; --surface-alt:#1b2621;
+      --ink:#edf2ee; --ink-2:#b7c2bb; --ink-mute:#84907f;
+      --accent:#57b592; --accent-strong:#82d8b8; --accent-soft:#1c352c;
+      --amber:#e3bb5e; --amber-strong:#f0d38c; --amber-soft:#2c2415;
+      --border:#28322b; --border-strong:#37423a;
+      --good:#0ca30c; --good-soft:#123420; --good-ink:#7fe08a;
+      --bad:#e66767; --bad-soft:#3a1c1c; --bad-ink:#ffb3ae;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+      --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg:#0f1713; --bg-alt:#131b17; --surface:#171f1a; --surface-alt:#1b2621;
+    --ink:#edf2ee; --ink-2:#b7c2bb; --ink-mute:#84907f;
+    --accent:#57b592; --accent-strong:#82d8b8; --accent-soft:#1c352c;
+    --amber:#e3bb5e; --amber-strong:#f0d38c; --amber-soft:#2c2415;
+    --border:#28322b; --border-strong:#37423a;
+    --good:#0ca30c; --good-soft:#123420; --good-ink:#7fe08a;
+    --bad:#e66767; --bad-soft:#3a1c1c; --bad-ink:#ffb3ae;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500;
+  }
+
+  *{box-sizing:border-box;}
+  body{background:var(--bg); color:var(--ink);}
+  h1,h2,h3,.display{font-family:"Fraunces",Georgia,"Times New Roman",serif; text-wrap:balance;}
+  body,input,button,select{font-family:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;}
+  .mono{font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;}
+  button{font:inherit; cursor:pointer;}
+  [hidden]{display:none !important;}
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 22px 90px;}
+
+  /* ---- topbar ---- */
+  .topbar{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:30;
+    background:var(--bg); border-bottom:1px solid var(--border);
+  }
+  .topbar-inner{max-width:1080px; margin:0 auto; padding:14px 22px 0;}
+  .brand-row{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
+  .brand-row .eyebrow{font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--amber); font-weight:700; white-space:nowrap;}
+  .brand-row h1{font-size:18px; margin:0; font-weight:600; color:var(--accent-strong); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .tabs{display:flex; gap:4px; overflow-x:auto; scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    padding:10px 16px; border-radius:10px 10px 0 0; border:1px solid transparent; border-bottom:none;
+    background:transparent; color:var(--ink-2); font-size:14px; font-weight:600; white-space:nowrap;
+  }
+  .tab-btn.active{background:var(--surface); color:var(--accent-strong); border-color:var(--border);}
+
+  /* ---- hero / overview ---- */
+  .hero{padding:30px 0 6px;}
+  .hero h1{font-size:clamp(26px,4vw,38px); margin:0 0 12px; color:var(--accent-strong); font-weight:600;}
+  .hero p{font-size:15.5px; color:var(--ink-2); max-width:64ch; line-height:1.65; margin:0;}
+
+  .stat-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0;}
+  @media (max-width:640px){.stat-row{grid-template-columns:1fr;}}
+  .stat-tile{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px 20px;
+    box-shadow:var(--shadow); cursor:pointer; text-align:left;
+  }
+  .stat-tile .n{font-family:"JetBrains Mono",monospace; font-size:30px; font-weight:700; color:var(--accent);}
+  .stat-tile .l{font-size:13.5px; color:var(--ink-2); margin-top:4px;}
+  .stat-tile .p{font-size:11.5px; color:var(--ink-mute); margin-top:8px; font-family:"JetBrains Mono",monospace;}
+
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px;}
+  .card h2{font-size:16.5px; margin:0 0 12px; color:var(--accent-strong); font-weight:600;}
+  .howto{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  @media (max-width:700px){.howto{grid-template-columns:1fr;}}
+  .howto-item{background:var(--surface-alt); border:1px solid var(--border); border-radius:12px; padding:15px 16px;}
+  .howto-item b{display:block; color:var(--ink); font-size:14px; margin-bottom:5px;}
+  .howto-item span{font-size:13px; color:var(--ink-2); line-height:1.5;}
+
+  /* ---- filter row (shared) ---- */
+  .filter-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:22px 0 18px;}
+  .search{flex:1; min-width:180px; padding:9px 13px; border-radius:9px; border:1px solid var(--border); background:var(--surface); color:var(--ink); font-size:13.5px;}
+  .chip{padding:7px 13px; border-radius:999px; border:1px solid var(--border-strong); background:var(--surface); color:var(--ink-2); font-size:12.5px; font-weight:600; display:inline-flex; align-items:center; gap:6px;}
+  .chip.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .chip .dot{width:7px; height:7px; border-radius:50%;}
+  .toggle-pill{margin-left:auto; padding:7px 13px; border-radius:999px; border:1px solid var(--border-strong); background:var(--surface); color:var(--ink-2); font-size:12.5px; font-weight:600;}
+  .toggle-pill.on{background:var(--amber-soft); border-color:var(--amber); color:var(--amber-strong);}
+  .progress-line{font-size:12.5px; color:var(--ink-mute); margin-bottom:14px; font-family:"JetBrains Mono",monospace;}
+
+  /* ---- Glossar: grid + flip cards ---- */
+  .card-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px;}
+  .flip-card{perspective:1200px; height:215px;}
+  .flip-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+  .flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-face{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:13px; border:1px solid var(--border);
+    background:var(--surface); box-shadow:var(--shadow); padding:16px; display:flex; flex-direction:column;
+  }
+  .flip-front{align-items:flex-start; justify-content:space-between; cursor:pointer;}
+  .flip-front .term{font-size:16px; font-weight:700; color:var(--ink); line-height:1.3;}
+  .flip-front .hint{font-size:11px; color:var(--ink-mute); margin-top:auto;}
+  .flip-back{transform:rotateY(180deg); cursor:pointer; justify-content:space-between;}
+  .flip-back .def{font-size:12.5px; color:var(--ink-2); line-height:1.48; overflow-y:auto; flex:1;}
+  .flip-back .rate-row{display:flex; gap:6px; margin-top:8px; flex-shrink:0;}
+  .rate-btn{flex:1; padding:6px 4px; border-radius:8px; border:1px solid var(--border-strong); background:var(--surface-alt); font-size:11px; font-weight:700; color:var(--ink-2);}
+  .rate-btn.know.on{background:var(--good-soft); border-color:var(--good); color:var(--good-ink);}
+  .rate-btn.practice.on{background:var(--amber-soft); border-color:var(--amber); color:var(--amber-strong);}
+  .block-flag{width:8px; height:8px; border-radius:50%; flex-shrink:0;}
+
+  .drill-launch{display:flex; justify-content:flex-end; margin-bottom:10px;}
+  .btn{padding:9px 16px; border-radius:10px; border:1px solid var(--border-strong); background:var(--surface); color:var(--ink); font-size:13px; font-weight:600; box-shadow:var(--shadow);}
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .btn:hover{border-color:var(--accent);}
+
+  .drill-overlay{
+    position:fixed; inset:0; background:rgba(10,16,13,.55); backdrop-filter:blur(2px);
+    display:flex; align-items:center; justify-content:center; z-index:100; padding:20px;
+  }
+  .drill-box{background:var(--surface); border-radius:18px; max-width:480px; width:100%; padding:26px; box-shadow:0 20px 60px rgba(0,0,0,.3); position:relative;}
+  .drill-close{position:absolute; top:14px; right:14px; background:transparent; border:none; color:var(--ink-mute); font-size:20px; padding:4px 8px;}
+  .drill-progress{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--ink-mute); margin-bottom:14px;}
+  .drill-card{min-height:180px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; cursor:pointer; padding:10px;}
+  .drill-card .term{font-size:22px; font-weight:700; color:var(--ink);}
+  .drill-card .def{font-size:14.5px; color:var(--ink-2); line-height:1.6; margin-top:14px;}
+  .drill-card .hint{font-size:12px; color:var(--ink-mute); margin-top:16px;}
+  .drill-actions{display:flex; gap:10px; margin-top:18px;}
+  .drill-actions button{flex:1;}
+  .drill-done{text-align:center; padding:20px 0;}
+
+  /* ---- Fallbeispiele ---- */
+  .case-card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:14px;}
+  .case-head{display:flex; align-items:flex-start; justify-content:space-between; gap:12px;}
+  .case-head-left{display:flex; align-items:center; gap:10px;}
+  .case-title{font-size:16px; font-weight:700; color:var(--ink);}
+  .case-check{width:20px; height:20px; border-radius:6px; border:1.5px solid var(--border-strong); background:var(--surface); flex-shrink:0; display:flex; align-items:center; justify-content:center;}
+  .case-check.on{background:var(--good); border-color:var(--good);}
+  .case-check.on::after{content:"✓"; color:#fff; font-size:13px;}
+  .case-sit{font-size:14px; color:var(--ink-2); line-height:1.6; margin-top:10px;}
+  .case-frage{font-size:14px; color:var(--ink); font-weight:600; margin-top:10px;}
+  .case-sol-btn{margin-top:12px;}
+  .case-sol{
+    margin-top:12px; background:var(--accent-soft); border-left:4px solid var(--accent); border-radius:0 10px 10px 0;
+    padding:13px 16px; font-size:13.5px; color:var(--ink); line-height:1.6;
+  }
+  .case-sol b{color:var(--accent-strong);}
+
+  /* ---- Quiz ---- */
+  .quiz-setup{display:flex; flex-direction:column; gap:16px; align-items:flex-start;}
+  .quiz-q-wrap{max-width:640px; margin:0 auto;}
+  .quiz-progress-track{width:100%; height:6px; background:var(--border); border-radius:3px; overflow:hidden; margin-bottom:22px;}
+  .quiz-progress-fill{height:100%; background:var(--accent); transition:width .3s ease;}
+  .quiz-q-meta{font-size:12px; color:var(--ink-mute); font-family:"JetBrains Mono",monospace; margin-bottom:8px;}
+  .quiz-q-text{font-size:19px; font-weight:600; color:var(--ink); margin-bottom:20px; line-height:1.4;}
+  .quiz-opt{
+    display:block; width:100%; text-align:left; padding:13px 16px; border-radius:11px; border:1.5px solid var(--border-strong);
+    background:var(--surface); color:var(--ink); font-size:14.5px; margin-bottom:10px; box-shadow:var(--shadow);
+  }
+  .quiz-opt:hover:not(:disabled){border-color:var(--accent);}
+  .quiz-opt.correct{background:var(--good-soft); border-color:var(--good); color:var(--good-ink); font-weight:700;}
+  .quiz-opt.wrong{background:var(--bad-soft); border-color:var(--bad); color:var(--bad-ink); font-weight:700;}
+  .quiz-opt:disabled{cursor:default;}
+  .quiz-explain{
+    margin-top:6px; margin-bottom:16px; background:var(--surface-alt); border:1px solid var(--border); border-radius:10px;
+    padding:13px 16px; font-size:13.5px; color:var(--ink-2); line-height:1.55;
+  }
+  .quiz-explain b{color:var(--ink);}
+  .quiz-next{display:flex; justify-content:flex-end;}
+
+  .quiz-result{text-align:center; padding:20px 0;}
+  .quiz-result .score{font-family:"JetBrains Mono",monospace; font-size:52px; font-weight:700; color:var(--accent);}
+  .quiz-result .score-label{font-size:14px; color:var(--ink-2); margin-top:2px;}
+  .block-bars{display:flex; flex-direction:column; gap:10px; margin:26px 0; text-align:left;}
+  .block-bar-row{display:flex; align-items:center; gap:12px;}
+  .block-bar-row .lbl{width:150px; font-size:12.5px; color:var(--ink-2); flex-shrink:0;}
+  .block-bar-track{flex:1; height:10px; background:var(--border); border-radius:5px; overflow:hidden;}
+  .block-bar-fill{height:100%; border-radius:5px;}
+  .block-bar-row .val{width:48px; text-align:right; font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--ink-mute); flex-shrink:0;}
+  .result-actions{display:flex; gap:10px; justify-content:center; margin-top:10px; flex-wrap:wrap;}
+
+  @media (max-width:520px){
+    .brand-row .eyebrow{display:none;}
+    .brand-row h1{font-size:15px;}
+    .wrap{padding:0 14px 80px;}
+  }
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-row">
+      <span class="eyebrow">WR 10 · Prüfungstraining</span>
+      <h1>Ökonomisches Handeln auf dem Markt</h1>
+    </div>
+    <div class="tabs" id="tabs">
+      <button class="tab-btn" data-tab="overview">Überblick</button>
+      <button class="tab-btn" data-tab="glossar">Glossar</button>
+      <button class="tab-btn" data-tab="faelle">Fallbeispiele</button>
+      <button class="tab-btn" data-tab="quiz">Quiz</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="main"></div>
+
+<script type="application/json" id="pruefung-data">
+{
+  "kurs": {
+    "fach": "Wirtschaft und Recht",
+    "jahrgangsstufe": "10",
+    "lernbereich": "Ökonomisches Handeln auf dem Markt",
+    "bloecke": [
+      {"id": "A", "titel": "Verbraucherentscheidungen in der Knappheit"},
+      {"id": "B", "titel": "Zahlungsverkehr und private Verschuldung"},
+      {"id": "C", "titel": "Geldanlage"},
+      {"id": "D", "titel": "Das Marktmodell"}
+    ]
+  },
+  "glossar": [
+    {"id":"g1","block":"A","begriff":"Bedürfnis","definition":"Das Gefühl eines Mangels, verbunden mit dem Wunsch, diesen durch ein Gut zu beseitigen. Man unterscheidet Existenz-, Grund-, Kultur- und Luxusbedürfnisse."},
+    {"id":"g2","block":"A","begriff":"Knappheit","definition":"Ein Gut ist knapp, wenn die gewünschte Menge größer ist als die tatsächlich verfügbare Menge – deshalb muss wirtschaftlich gehandelt werden."},
+    {"id":"g3","block":"A","begriff":"Freies Gut","definition":"Ein Gut, das in unbegrenzter Menge zur Verfügung steht und daher keinen Preis hat, z. B. Luft zum Atmen."},
+    {"id":"g4","block":"A","begriff":"Wirtschaftliches Gut","definition":"Ein knappes Gut, das einen Preis hat und über den Markt verteilt wird."},
+    {"id":"g5","block":"A","begriff":"Ökonomisches Prinzip","definition":"Der Grundsatz, das Verhältnis von eingesetzten Mitteln und erzieltem Erfolg möglichst günstig zu gestalten."},
+    {"id":"g6","block":"A","begriff":"Maximumprinzip","definition":"Mit einem gegebenen Mitteleinsatz den größtmöglichen Erfolg erzielen."},
+    {"id":"g7","block":"A","begriff":"Minimumprinzip","definition":"Ein gegebenes Ziel mit dem geringstmöglichen Mitteleinsatz erreichen."},
+    {"id":"g8","block":"A","begriff":"Opportunitätskosten","definition":"Der Nutzen der besten nicht gewählten Alternative, auf den man verzichtet, wenn man sich für eine andere Option entscheidet."},
+    {"id":"g9","block":"A","begriff":"Kosten-Nutzen-Analyse","definition":"Ein systematisches Verfahren, bei dem Alternativen anhand gewichteter Kriterien bewertet werden, um eine begründete Entscheidung zu treffen."},
+    {"id":"g10","block":"A","begriff":"Homo oeconomicus","definition":"Modellhafte Annahme eines Menschen, der vollständig informiert ist, unbegrenzt rational denkt und stets seinen eigenen Nutzen maximiert."},
+    {"id":"g11","block":"A","begriff":"Verhaltensökonomie","definition":"Forschungsrichtung, die untersucht, warum Menschen in der Realität oft anders entscheiden, als es das Modell des homo oeconomicus vorhersagt."},
+    {"id":"g12","block":"A","begriff":"Endowment-Effekt","definition":"Die Tendenz, einen Gegenstand, den man besitzt, höher zu bewerten, als man für einen identischen, nicht besessenen Gegenstand zu zahlen bereit wäre."},
+    {"id":"g13","block":"A","begriff":"Ultimatumspiel","definition":"Ein Experiment, bei dem eine Person einen Geldbetrag aufteilen muss und die andere das Angebot nur annehmen oder ablehnen kann – es zeigt, dass Fairness Entscheidungen beeinflusst."},
+    {"id":"g14","block":"A","begriff":"Nudging","definition":"Das gezielte, sanfte Lenken von Entscheidungen durch die Gestaltung der Auswahlsituation, ohne Verbote oder finanzielle Anreize einzusetzen."},
+    {"id":"g15","block":"A","begriff":"AIDA-Modell","definition":"Ein Modell der Werbewirkung mit den vier Stufen Attention (Aufmerksamkeit), Interest (Interesse), Desire (Verlangen) und Action (Handlung)."},
+    {"id":"g16","block":"A","begriff":"Verkaufspsychologische Maßnahme","definition":"Eine gezielte Gestaltung von Raum, Warenplatzierung oder Sinnesreizen im Handel, die das Kaufverhalten beeinflussen soll."},
+    {"id":"g17","block":"A","begriff":"Nachhaltigkeit (Drei-Säulen-Modell)","definition":"Prinzip, wonach ökonomische, ökologische und soziale Aspekte bei Entscheidungen gemeinsam und gleichrangig berücksichtigt werden sollen."},
+    {"id":"g18","block":"A","begriff":"Greenwashing","definition":"Wenn ein Unternehmen sich durch Werbung nachhaltiger darstellt, als es seine tatsächlichen Produkte oder Prozesse rechtfertigen."},
+
+    {"id":"g19","block":"B","begriff":"Überschuldung","definition":"Ein Zustand, in dem laufende Einnahmen und Vermögen dauerhaft nicht mehr ausreichen, um die finanziellen Verpflichtungen zu erfüllen."},
+    {"id":"g20","block":"B","begriff":"Dispokredit","definition":"Eine kurzfristige, meist teure Überziehung des Girokontos über den vorhandenen Kontostand hinaus."},
+    {"id":"g21","block":"B","begriff":"Schufa","definition":"Eine Wirtschaftsauskunftei, die Daten zur Kreditwürdigkeit von Personen (Score) sammelt und an Vertragspartner wie Banken oder Vermieter weitergibt."},
+    {"id":"g22","block":"B","begriff":"Haushaltsplan","definition":"Eine Übersicht über Einnahmen und Ausgaben, mit der sich der monatliche finanzielle Spielraum berechnen lässt."},
+    {"id":"g23","block":"B","begriff":"Zahlungsart","definition":"Die Art und Weise, wie eine Zahlung zwischen Käufer und Verkäufer technisch abgewickelt wird, z. B. bar, per Überweisung oder Karte."},
+    {"id":"g24","block":"B","begriff":"Lastschriftverfahren","definition":"Zahlungsart, bei der der Zahlungsempfänger den fälligen Betrag selbst vom Konto des Zahlungspflichtigen einzieht."},
+    {"id":"g25","block":"B","begriff":"Girocard / Debitkarte","definition":"Zahlungskarte, bei der der Betrag sofort vom Girokonto abgebucht wird."},
+    {"id":"g26","block":"B","begriff":"Kreditkarte","definition":"Zahlungskarte, bei der die Umsätze gesammelt und erst später (meist monatlich) abgerechnet werden."},
+    {"id":"g27","block":"B","begriff":"Kryptowährung","definition":"Eine dezentral organisierte, rein digitale Währung, die auf der Blockchain-Technologie basiert und keine zentrale Ausgabestelle hat."},
+    {"id":"g28","block":"B","begriff":"Blockchain","definition":"Eine dezentrale, fälschungssichere Kette von Datenblöcken, in der Transaktionen unveränderlich gespeichert werden."},
+    {"id":"g29","block":"B","begriff":"Digitaler Euro","definition":"Ein von der Europäischen Zentralbank geplantes digitales Zahlungsmittel, das – anders als Kryptowährungen – staatlich reguliert und wertstabil ist."},
+
+    {"id":"g30","block":"C","begriff":"Tauschmittel","definition":"Geldfunktion, die den direkten Tausch von Gütern gegen Güter ersetzt."},
+    {"id":"g31","block":"C","begriff":"Recheneinheit (Wertmaßstab)","definition":"Geldfunktion, die es ermöglicht, den Wert unterschiedlicher Güter in einer gemeinsamen Einheit vergleichbar zu machen."},
+    {"id":"g32","block":"C","begriff":"Wertaufbewahrungsmittel","definition":"Geldfunktion, die es ermöglicht, Kaufkraft über die Zeit hinweg zu speichern."},
+    {"id":"g33","block":"C","begriff":"Geldwertstabilität","definition":"Ein Zustand, in dem die Kaufkraft des Geldes über die Zeit weitgehend erhalten bleibt."},
+    {"id":"g34","block":"C","begriff":"Inflation","definition":"Ein anhaltender Anstieg des allgemeinen Preisniveaus, durch den die Kaufkraft einer Geldeinheit sinkt."},
+    {"id":"g35","block":"C","begriff":"Magisches Dreieck der Geldanlage","definition":"Der Zielkonflikt zwischen den drei Anlagezielen Rentabilität, Liquidität und Sicherheit – alle drei sind nie gleichzeitig maximal erreichbar."},
+    {"id":"g36","block":"C","begriff":"Rentabilität","definition":"Der Ertrag einer Geldanlage im Verhältnis zum eingesetzten Kapital."},
+    {"id":"g37","block":"C","begriff":"Liquidität (Geldanlage)","definition":"Die Möglichkeit, eine Geldanlage kurzfristig und ohne Verlust in Bargeld umzuwandeln."},
+    {"id":"g38","block":"C","begriff":"Sicherheit (Geldanlage)","definition":"Der Grad, in dem das angelegte Kapital vor einem Wertverlust geschützt ist."},
+    {"id":"g39","block":"C","begriff":"Festgeld","definition":"Eine für einen festen Zeitraum gebundene, sichere Geldanlage mit im Voraus festgelegtem Zinssatz."},
+    {"id":"g40","block":"C","begriff":"Aktie","definition":"Ein Wertpapier, das einen Anteil am Eigenkapital einer Aktiengesellschaft verbrieft."},
+    {"id":"g41","block":"C","begriff":"ETF","definition":"Ein börsengehandelter Fonds, der meist einen Index nachbildet und dadurch breit gestreut in viele Wertpapiere investiert."},
+
+    {"id":"g42","block":"D","begriff":"Markt","definition":"Der Ort oder Mechanismus, an dem Angebot und Nachfrage nach einem Gut aufeinandertreffen und ein Preis gebildet wird."},
+    {"id":"g43","block":"D","begriff":"Nachfrage","definition":"Die Menge eines Gutes, die Käufer bei einem bestimmten Preis zu kaufen bereit und in der Lage sind."},
+    {"id":"g44","block":"D","begriff":"Angebot","definition":"Die Menge eines Gutes, die Anbieter bei einem bestimmten Preis zu verkaufen bereit sind."},
+    {"id":"g45","block":"D","begriff":"Gleichgewichtspreis","definition":"Der Preis, bei dem die angebotene und die nachgefragte Menge exakt übereinstimmen."},
+    {"id":"g46","block":"D","begriff":"Angebotsüberhang","definition":"Eine Situation, in der bei einem bestimmten Preis mehr angeboten als nachgefragt wird (Überschuss)."},
+    {"id":"g47","block":"D","begriff":"Nachfrageüberhang","definition":"Eine Situation, in der bei einem bestimmten Preis mehr nachgefragt als angeboten wird (Mangel)."},
+    {"id":"g48","block":"D","begriff":"Prämissen des vollkommenen Marktes","definition":"Vereinfachende Annahmen des Marktmodells, u. a. vollständige Markttransparenz, homogene Güter und viele Anbieter/Nachfrager ohne Marktmacht."},
+    {"id":"g49","block":"D","begriff":"Koordinationsfunktion des Marktes","definition":"Der Mechanismus, durch den der Preis Angebot und Nachfrage ganz ohne zentrale Steuerung aufeinander abstimmt."}
+  ],
+  "faelle": [
+    {"id":"f1","block":"A","titel":"Jobben oder lernen?","situation":"Paul hat für Samstagnachmittag zwei Möglichkeiten: Er kann 5 Stunden im Supermarkt aushelfen und dabei 55 € verdienen, oder er nutzt die Zeit, um für die Physik-Schulaufgabe zu lernen, die er sonst nur oberflächlich vorbereiten könnte.","frage":"Bestimme für beide Alternativen die Opportunitätskosten.","loesung":"Entscheidet sich Paul fürs Lernen, bestehen seine Opportunitätskosten aus den entgangenen 55 € Verdienst. Entscheidet er sich fürs Jobben, bestehen seine Opportunitätskosten aus der entgangenen besseren Vorbereitung auf die Schulaufgabe (und einer möglicherweise schlechteren Note) – ein nicht-monetärer, aber realer Opportunitätskostenwert."},
+    {"id":"f2","block":"A","titel":"Werbebudget der Bäckerei","situation":"Eine Bäckerei möchte mit einem festen Werbebudget von 500 € möglichst viele neue Kunden gewinnen.","frage":"Handelt es sich um eine Anwendung des Maximum- oder des Minimumprinzips? Begründe.","loesung":"Maximumprinzip: Die Mittel (500 €) sind fest vorgegeben, das Ziel (möglichst viele neue Kunden) soll damit maximiert werden."},
+    {"id":"f3","block":"A","titel":"Das teure Fahrrad","situation":"Frau Berger verkauft ihr drei Jahre altes Fahrrad über eine Kleinanzeige für 350 €, obwohl vergleichbare gebrauchte Räder im Internet bereits für 220 € angeboten werden.","frage":"Welches verhaltensökonomische Phänomen lässt sich hier erkennen, und wie widerspricht es dem Modell des homo oeconomicus?","loesung":"Es handelt sich um den Endowment-Effekt: Frau Berger bewertet ihr eigenes Fahrrad höher, nur weil es ihr gehört. Ein rein rational handelnder homo oeconomicus würde sich hingegen am objektiven Marktpreis (220 €) orientieren."},
+    {"id":"f4","block":"A","titel":"Obst in der Kantine","situation":"In der Schulkantine wird das Obst in Augenhöhe direkt am Eingang platziert, während Süßigkeiten in einer geschlossenen Vitrine am hinteren Ende stehen.","frage":"Um welche Art von Maßnahme handelt es sich, und wodurch unterscheidet sie sich von einem Verbot?","loesung":"Es handelt sich um einen Nudge (Sichtbarkeits-/Platzierungs-Nudge). Anders als bei einem Verbot bleibt die Wahlfreiheit vollständig erhalten – Süßigkeiten sind weiterhin erhältlich, werden aber durch die Platzierung seltener spontan gewählt."},
+    {"id":"f5","block":"A","titel":"Werbung für einen Energy-Drink","situation":"Eine Anzeige für einen neuen Energy-Drink zeigt zunächst ein grelles, großformatiges Bild eines Extremsportlers beim Klettern, darunter Informationen zu Koffeingehalt und Geschmack, anschließend ein Zitat eines bekannten Influencers („Ohne geht bei mir nichts mehr!“) und am Ende den Hinweis „Nur diese Woche: 20 % Rabatt beim Erstkauf“.","frage":"Ordne die vier genannten Elemente den Stufen des AIDA-Modells zu.","loesung":"Attention: grelles, großformatiges Bild. Interest: Informationen zu Koffeingehalt/Geschmack. Desire: Influencer-Zitat (emotionale Aufladung, Vorbildwirkung). Action: zeitlich begrenzter Rabatt als Kaufanreiz."},
+    {"id":"f6","block":"A","titel":"Regalplatzierung im Supermarkt","situation":"In einem Supermarkt befinden sich teure Markenprodukte auf Augenhöhe im Regal, günstigere Eigenmarken hingegen ganz unten in der Bückzone.","frage":"Erkläre die dahinterliegende verkaufspsychologische Strategie und nenne eine mögliche Gegenstrategie für Konsument:innen.","loesung":"Produkte auf Augenhöhe werden am ehesten spontan wahrgenommen und gegriffen (höhere Marge für den Handel); die Bückzone wird seltener bewusst durchsucht. Gegenstrategie: bewusst auch die oberen und unteren Regalreihen vergleichen, bevor man zugreift."},
+    {"id":"f7","block":"A","titel":"Zwei T-Shirts im Vergleich","situation":"Ein T-Shirt aus konventioneller Baumwolle kostet 4 €, ein baumwollgleiches T-Shirt mit Fairtrade- und Bio-Siegel kostet 22 €.","frage":"Ordne mindestens je ein Argument für die teurere Variante den drei Säulen der Nachhaltigkeit zu.","loesung":"Ökonomisch: fair bezahlte Löhne entlang der Lieferkette (langfristig stabilere Produktionsstrukturen). Ökologisch: biologischer Anbau ohne Pestizide, geringerer Wasser-/Chemieeinsatz. Sozial: bessere Arbeitsbedingungen, keine Kinderarbeit, existenzsichernde Löhne."},
+
+    {"id":"f8","block":"B","titel":"Emres Fixkosten","situation":"Emre, 19, verdient als Azubi 950 € netto. Er zahlt monatlich 45 € Handyvertrag, 35 € Streaming- und Musik-Abos, 40 € Fitnessstudio sowie 60 € Rate für ein neu gekauftes Smartphone. Sein Konto ist regelmäßig um 200 € im Dispo überzogen.","frage":"Berechne Emres monatliche feste Belastung durch Abos/Raten und nenne zwei Ursachen, die zu seiner Situation beigetragen haben.","loesung":"Feste Belastung: 45 + 35 + 40 + 60 = 180 € monatlich, zusätzlich Dispozinsen. Ursachen: Ansammlung mehrerer Abo-Verträge („Abo-Falle“) und Ratenkauf ohne Rücklage, verbunden mit fehlender Übersicht über die Gesamtbelastung, die zur dauerhaften Kontoüberziehung führt."},
+    {"id":"f9","block":"B","titel":"Lenas Haushaltsplan","situation":"Lena verdient 1.450 € netto. Ihre Miete inkl. Nebenkosten beträgt 620 €, Versicherungen 60 €, Handyvertrag 25 €, Lebensmittel 250 €, Freizeit 150 €, Kleidung 80 €.","frage":"Berechne Lenas finanziellen Spielraum und schlage eine sinnvolle monatliche Sparrate vor.","loesung":"Ausgaben gesamt: 620 + 60 + 25 + 250 + 150 + 80 = 1.185 €. Spielraum: 1.450 − 1.185 = 265 €. Ein Teil davon (z. B. 100–150 €) sollte als Rücklage/Sparrate zurückgelegt werden, der Rest bleibt Puffer für Unvorhergesehenes."},
+    {"id":"f10","block":"B","titel":"Drei Kaufsituationen","situation":"Tim möchte (a) online einen 900-€-Laptop kaufen, (b) auf dem Wochenmarkt für 6 € Gemüse kaufen und (c) monatlich 15 € für sein Streaming-Abo bezahlen.","frage":"Schlage für jede Situation eine passende Zahlungsart vor und begründe kurz mit einem Kriterium (Sicherheit, Kosten, Zweckmäßigkeit).","loesung":"(a) Kreditkarte: bietet bei hohen Beträgen Käuferschutz/Sicherheit. (b) Barzahlung: schnell und unkompliziert für kleine Beträge ohne Kartenlesegerät. (c) Lastschrift/Dauerauftrag: zweckmäßig für wiederkehrende, gleichbleibende Zahlungen."},
+    {"id":"f11","block":"B","titel":"Kursrutsch bei Kryptowährung","situation":"Ein Anleger investiert 1.000 € in eine Kryptowährung. Eine Woche später ist der Wert auf 620 € gefallen.","frage":"Welches Risiko digitaler Anlagen zeigt sich hier, und wie unterscheidet sich der digitale Euro in diesem Punkt?","loesung":"Es zeigt sich das Kursrisiko durch die starke Wertschwankung (Volatilität) von Kryptowährungen. Der digitale Euro ist dagegen als staatlich reguliertes Zentralbankgeld auf Wertstabilität ausgelegt und unterliegt keinen vergleichbaren Kursschwankungen."},
+    {"id":"f12","block":"B","titel":"Verdächtige SMS","situation":"Jana erhält eine SMS, die angeblich von ihrer Bank stammt und sie auffordert, über einen Link ihre Online-Banking-Zugangsdaten zu bestätigen.","frage":"Wie sollte Jana reagieren, und welches Risiko des digitalen Zahlungsverkehrs zeigt dieses Beispiel?","loesung":"Jana sollte den Link nicht anklicken und ihre Daten nicht eingeben (typischer Phishing-Versuch); im Zweifel sollte sie direkt über die offizielle App/Webseite ihrer Bank nachfragen. Das Beispiel zeigt das Sicherheitsrisiko (Betrug/Datenmissbrauch) digitaler Zahlungsverfahren."},
+
+    {"id":"f13","block":"C","titel":"Sofort ausgeben statt sparen","situation":"In einem Land mit sehr hoher Inflation geben die Menschen ihr Gehalt am Tag der Auszahlung sofort für Sachwerte aus, anstatt es zu sparen.","frage":"Welche Geldfunktion ist hier besonders gefährdet, und warum?","loesung":"Gefährdet ist die Wertaufbewahrungsfunktion: Da das Geld durch die Inflation schnell an Kaufkraft verliert, lohnt es sich nicht mehr, es aufzubewahren – die Menschen tauschen es umgehend in Sachwerte."},
+    {"id":"f14","block":"C","titel":"Vier Geldanlagen im Dreieck","situation":"Vier Geldanlagen: (1) Tagesgeldkonto, (2) fünfjähriges Festgeld, (3) breit gestreuter Aktien-ETF, (4) selbst genutzte Eigentumswohnung.","frage":"Ordne jede Anlage im magischen Dreieck ein (Schwerpunkt: Rentabilität, Liquidität oder Sicherheit) und begründe kurz.","loesung":"(1) Tagesgeld: hohe Sicherheit und Liquidität, niedrige Rentabilität. (2) Festgeld: hohe Sicherheit, etwas höhere Rentabilität, aber geringe Liquidität durch Bindung. (3) Aktien-ETF: höhere Rentabilität möglich, meist liquide, aber geringere Sicherheit (Kursschwankungen). (4) Eigentumswohnung: potenziell hohe Rentabilität, aber sehr geringe Liquidität und hoher Kapitalbedarf."},
+    {"id":"f15","block":"C","titel":"Rendite einer Aktie berechnen","situation":"Eine Aktie wird für 40 € gekauft und ein Jahr später für 46 € verkauft; zusätzlich wurde 1 € Dividende je Aktie ausgeschüttet.","frage":"Berechne die Rendite dieser Geldanlage in Prozent.","loesung":"Gesamtertrag = (46 − 40) + 1 = 7 €. Rendite = 7 € / 40 € × 100 = 17,5 % pro Jahr."},
+    {"id":"f16","block":"C","titel":"Rendite oder Nachhaltigkeit?","situation":"Frau Kaya kann zwischen einem klassischen Fonds mit 6 % erwarteter Rendite und einem nachhaltigen Fonds mit 4,5 % erwarteter Rendite wählen, der ausschließlich in Unternehmen mit strengen Umwelt- und Sozialstandards investiert.","frage":"Welches Kriterium der Geldanlage spielt hier zusätzlich zum magischen Dreieck eine Rolle?","loesung":"Es handelt sich um das ethische/nachhaltige Kriterium der Geldanlage. Frau Kaya müsste abwägen, ob ihr die geringere Rendite den Ausgleich durch ökologisch/sozial verantwortungsvollere Investitionen wert ist – eine individuelle Wertentscheidung neben Rentabilität, Liquidität und Sicherheit."},
+
+    {"id":"f17","block":"D","titel":"Gleichgewichtspreis berechnen","situation":"Für ein Produkt gilt: Bei einem Preis von 8 € werden 100 Stück nachgefragt und 40 Stück angeboten; bei 12 € werden 60 Stück nachgefragt und 60 Stück angeboten; bei 16 € werden 20 Stück nachgefragt und 90 Stück angeboten.","frage":"Bestimme den Gleichgewichtspreis und die Gleichgewichtsmenge.","loesung":"Bei 12 € stimmen angebotene und nachgefragte Menge mit jeweils 60 Stück überein. Gleichgewichtspreis = 12 €, Gleichgewichtsmenge = 60 Stück."},
+    {"id":"f18","block":"D","titel":"Gedeckelte Konzertticketpreise","situation":"Für Konzerttickets wird ein staatlich gedeckelter Höchstpreis festgelegt, der unterhalb des eigentlichen Gleichgewichtspreises liegt.","frage":"Welcher Markteffekt entsteht dadurch, und wie zeigt er sich in der Praxis?","loesung":"Da der Preis künstlich unter dem Gleichgewichtspreis liegt, übersteigt die nachgefragte Menge das Angebot – es entsteht ein Nachfrageüberhang (Mangel). In der Praxis zeigt sich das z. B. an sehr schnell ausverkauften Tickets und einem entstehenden Schwarzmarkt."},
+    {"id":"f19","block":"D","titel":"Hitzewelle und Ventilatoren","situation":"Während einer mehrtägigen Hitzewelle steigt die Nachfrage nach Ventilatoren stark an, während das Angebot kurzfristig unverändert bleibt.","frage":"Beschreibe, wie sich Preis und Menge im Marktmodell verändern.","loesung":"Die Nachfragekurve verschiebt sich nach rechts (bei jedem Preis wird mehr nachgefragt). Da das Angebot kurzfristig gleich bleibt, steigen sowohl der Gleichgewichtspreis als auch die gehandelte Menge."},
+    {"id":"f20","block":"D","titel":"Missernte am Kaffeemarkt","situation":"Durch eine Missernte sinkt die weltweit verfügbare Kaffeemenge deutlich, die Nachfrage der Konsument:innen bleibt zunächst unverändert.","frage":"Beschreibe die Auswirkung auf Preis und Menge am Kaffeemarkt.","loesung":"Die Angebotskurve verschiebt sich nach links (bei jedem Preis wird weniger angeboten). Der Gleichgewichtspreis steigt, während die gehandelte Menge sinkt."},
+    {"id":"f21","block":"D","titel":"Der Smartphone-Markt in der Realität","situation":"Auf dem Smartphone-Markt gibt es wenige große Hersteller mit starker Markenbindung, unterschiedlich informierte Käufer:innen und deutlich unterscheidbare Produkte.","frage":"Nenne zwei Prämissen des vollkommenen Marktes, die hier verletzt sind, und erkläre kurz, warum.","loesung":"1) Homogenität der Güter ist verletzt: Smartphones unterscheiden sich stark in Marke, Ausstattung und Image. 2) Vollständige Markttransparenz ist verletzt: Käufer:innen sind unterschiedlich gut informiert. Zusätzlich ist die Prämisse „viele Anbieter ohne Marktmacht“ verletzt, da wenige große Hersteller den Markt dominieren."},
+    {"id":"f22","block":"D","titel":"Unverkaufte Erdbeeren","situation":"Auf einem Wochenmarkt bleiben am frühen Nachmittag noch viele unverkaufte Erdbeeren übrig.","frage":"Erkläre anhand dieses Beispiels die Koordinationsfunktion des Marktes.","loesung":"Der anfängliche Preis lag über dem Gleichgewichtspreis, sodass ein Angebotsüberhang entstand. Um die Erdbeeren doch noch zu verkaufen, senken die Anbieter den Preis – dadurch steigt die nachgefragte Menge, bis sich Angebot und Nachfrage wieder annähern. Der Preis koordiniert also ganz ohne zentrale Steuerung, wie viel angeboten und nachgefragt wird."}
+  ],
+  "quiz": [
+    {"id":"q1","block":"A","frage":"Was versteht man unter Knappheit?","optionen":["Ein Gut, das niemand haben möchte.","Ein Zustand, in dem die gewünschte Menge eines Gutes größer ist als die verfügbare Menge.","Ein Gut, das keinen Preis hat.","Ein Überschuss an Produktionsmitteln."],"correct":1,"erklaerung":"Knappheit entsteht, wenn die Bedürfnisse nach einem Gut größer sind als die tatsächlich vorhandene Menge."},
+    {"id":"q2","block":"A","frage":"Welches Prinzip liegt vor, wenn mit einem festen Budget der größtmögliche Erfolg erzielt werden soll?","optionen":["Minimumprinzip","Maximumprinzip","Sparprinzip","Liquiditätsprinzip"],"correct":1,"erklaerung":"Beim Maximumprinzip sind die Mittel fest vorgegeben, das Ziel soll damit maximiert werden."},
+    {"id":"q3","block":"A","frage":"Was sind Opportunitätskosten?","optionen":["Die tatsächlich gezahlten Kosten einer Entscheidung.","Die Kosten für entgangene Gewinne aus Werbung.","Der Nutzen der bestmöglichen, nicht gewählten Alternative.","Die Kosten, die durch Inflation entstehen."],"correct":2,"erklaerung":"Opportunitätskosten sind kein Geldbetrag, sondern der entgangene Nutzen der besten Alternative."},
+    {"id":"q4","block":"A","frage":"Welche Aussage über den homo oeconomicus trifft zu?","optionen":["Er handelt stets emotional und fair.","Er ist ein Modell eines vollständig informierten, rational und eigennützig handelnden Menschen.","Er beschreibt reales, beobachtbares Verhalten aller Menschen.","Er berücksichtigt immer soziale Normen."],"correct":1,"erklaerung":"Der homo oeconomicus ist eine vereinfachende Modellannahme, kein realistisches Abbild des Menschen."},
+    {"id":"q5","block":"A","frage":"Was zeigt der Endowment-Effekt?","optionen":["Menschen bewerten eigene Besitztümer höher als identische, fremde Gegenstände.","Menschen handeln immer rational.","Werbung hat keinen Einfluss auf Kaufentscheidungen.","Güter werden mit steigendem Preis immer unattraktiver."],"correct":0,"erklaerung":"Der Endowment-Effekt beschreibt die höhere Wertschätzung eigenen Besitzes – ein klassisches verhaltensökonomisches Phänomen."},
+    {"id":"q6","block":"A","frage":"Welches Beispiel ist ein klassischer Nudge?","optionen":["Ein gesetzliches Verbot von Süßigkeitenwerbung.","Eine hohe Zuckersteuer.","Die Platzierung von Obst auf Augenhöhe in der Kantine.","Ein Bußgeld für ungesunde Ernährung."],"correct":2,"erklaerung":"Ein Nudge lenkt sanft, ohne Verbote oder finanzielle Anreize; die Wahlfreiheit bleibt erhalten."},
+    {"id":"q7","block":"A","frage":"Welche Stufe des AIDA-Modells zielt auf einen konkreten Kaufanreiz wie einen Rabattcode?","optionen":["Attention","Interest","Desire","Action"],"correct":3,"erklaerung":"Die Action-Stufe soll die konkrete Kaufhandlung auslösen, z. B. durch einen zeitlich begrenzten Rabatt."},
+    {"id":"q8","block":"A","frage":"Welche der folgenden Maßnahmen zählt zu verkaufspsychologischen Strategien im Handel?","optionen":["Platzierung der Kasse direkt am Eingang.","Platzierung von Süßigkeiten im Kassenbereich.","Einheitliche Beleuchtung im gesamten Markt.","Verzicht auf Hintergrundmusik."],"correct":1,"erklaerung":"Süßigkeiten an der Kasse nutzen die Wartezeit für spontane Zusatzkäufe – eine typische verkaufspsychologische Maßnahme."},
+    {"id":"q9","block":"A","frage":"Welche drei Säulen umfasst das Nachhaltigkeitsmodell?","optionen":["Politik, Recht, Gesellschaft","Ökonomisch, ökologisch, sozial","Angebot, Nachfrage, Preis","Rendite, Sicherheit, Liquidität"],"correct":1,"erklaerung":"Das Drei-Säulen-Modell verbindet ökonomische, ökologische und soziale Aspekte."},
+
+    {"id":"q10","block":"B","frage":"Welche Aussage über den Dispokredit trifft zu?","optionen":["Er ist meist zinsgünstiger als ein normaler Ratenkredit.","Er ist eine kurzfristige, meist teure Kontoüberziehung.","Er wird nur für Immobilienkäufe genutzt.","Er erhöht automatisch die Schufa-Bonität."],"correct":1,"erklaerung":"Der Dispokredit ist meist mit hohen Zinsen verbunden und für kurzfristige Überziehungen gedacht."},
+    {"id":"q11","block":"B","frage":"Wofür steht die Schufa?","optionen":["Eine staatliche Behörde zur Steuerfestsetzung.","Eine Wirtschaftsauskunftei, die Daten zur Kreditwürdigkeit sammelt.","Eine Bank für Studienkredite.","Ein Gütesiegel für nachhaltige Geldanlagen."],"correct":1,"erklaerung":"Die Schufa sammelt und verwaltet Bonitätsdaten und gibt diese an Vertragspartner weiter."},
+    {"id":"q12","block":"B","frage":"Welche Zahlungsart eignet sich besonders für wiederkehrende, gleichbleibende Zahlungen wie Miete?","optionen":["Barzahlung","Scheck","Lastschrift/Dauerauftrag","Kryptowährung"],"correct":2,"erklaerung":"Lastschrift bzw. Dauerauftrag sind für regelmäßige, gleichbleibende Zahlungen besonders zweckmäßig."},
+    {"id":"q13","block":"B","frage":"Was ist ein zentrales Risiko von Kryptowährungen?","optionen":["Zu hohe staatliche Regulierung","Starke Kursschwankungen (Volatilität)","Fehlende digitale Verfügbarkeit","Zu niedrige Transaktionsgeschwindigkeit weltweit"],"correct":1,"erklaerung":"Kryptowährungen unterliegen kaum staatlicher Regulierung und schwanken im Wert oft sehr stark."},
+    {"id":"q14","block":"B","frage":"Worin unterscheidet sich der digitale Euro grundlegend von Kryptowährungen?","optionen":["Er wird von der Europäischen Zentralbank ausgegeben und ist reguliert/wertstabil.","Er basiert nicht auf digitaler Technologie.","Er ist nur außerhalb Europas nutzbar.","Er kann nicht für Zahlungen verwendet werden."],"correct":0,"erklaerung":"Der digitale Euro ist – anders als Kryptowährungen – staatlich abgesichertes, wertstabiles Zentralbankgeld."},
+    {"id":"q15","block":"B","frage":"Was ist die wichtigste Grundlage eines Haushaltsplans?","optionen":["Die Gegenüberstellung von Einnahmen und Ausgaben.","Die Berechnung des Aktienkurses.","Die Ermittlung des Gleichgewichtspreises.","Die Bewertung von Werbemaßnahmen."],"correct":0,"erklaerung":"Ein Haushaltsplan stellt Einnahmen und Ausgaben gegenüber, um den finanziellen Spielraum zu ermitteln."},
+
+    {"id":"q16","block":"C","frage":"Welche Geldfunktion ist bei hoher Inflation besonders gefährdet?","optionen":["Tauschmittelfunktion","Recheneinheitfunktion","Wertaufbewahrungsfunktion","Signalfunktion"],"correct":2,"erklaerung":"Bei hoher Inflation verliert Geld schnell an Kaufkraft – die Wertaufbewahrungsfunktion ist dadurch gefährdet."},
+    {"id":"q17","block":"C","frage":"Welche drei Ziele bilden das magische Dreieck der Geldanlage?","optionen":["Angebot, Nachfrage, Preis","Rentabilität, Liquidität, Sicherheit","Ökonomie, Ökologie, Soziales","Knappheit, Bedürfnis, Kosten"],"correct":1,"erklaerung":"Rentabilität, Liquidität und Sicherheit stehen beim magischen Dreieck der Geldanlage im Zielkonflikt."},
+    {"id":"q18","block":"C","frage":"Welche Anlageform ist typischerweise am wenigsten liquide?","optionen":["Tagesgeldkonto","Bargeld","Eigentumswohnung","Girokonto"],"correct":2,"erklaerung":"Immobilien lassen sich nur langsam und mit hohem Aufwand wieder zu Geld machen – sie sind daher wenig liquide."},
+    {"id":"q19","block":"C","frage":"Was beschreibt die Rentabilität einer Geldanlage?","optionen":["Wie schnell eine Anlage verfügbar gemacht werden kann.","Den Ertrag im Verhältnis zum eingesetzten Kapital.","Das Risiko eines Totalverlusts.","Die Anzahl möglicher Anlageformen."],"correct":1,"erklaerung":"Rentabilität misst den erzielten Ertrag im Verhältnis zum eingesetzten Kapital."},
+    {"id":"q20","block":"C","frage":"Ein ETF investiert typischerweise …","optionen":["… nur in eine einzelne Aktie.","… breit gestreut, oft in einen ganzen Index.","… ausschließlich in Immobilien.","… nur in Kryptowährungen."],"correct":1,"erklaerung":"ETFs bilden meist einen Index nach und streuen das Kapital dadurch breit auf viele Wertpapiere."},
+
+    {"id":"q21","block":"D","frage":"Wie verläuft die Nachfragekurve typischerweise?","optionen":["Steigend","Fallend","Waagrecht","Senkrecht"],"correct":1,"erklaerung":"Je höher der Preis, desto geringer die nachgefragte Menge – die Nachfragekurve fällt."},
+    {"id":"q22","block":"D","frage":"Wie verläuft die Angebotskurve typischerweise?","optionen":["Fallend","Steigend","Waagrecht","Senkrecht"],"correct":1,"erklaerung":"Je höher der Preis, desto größer die angebotene Menge – die Angebotskurve steigt."},
+    {"id":"q23","block":"D","frage":"Was kennzeichnet den Gleichgewichtspreis?","optionen":["Bei diesem Preis ist die angebotene Menge größer als die nachgefragte Menge.","Bei diesem Preis stimmen angebotene und nachgefragte Menge überein.","Bei diesem Preis gibt es keine Nachfrage.","Er wird staatlich festgelegt."],"correct":1,"erklaerung":"Der Gleichgewichtspreis ist der Schnittpunkt von Angebots- und Nachfragekurve."},
+    {"id":"q24","block":"D","frage":"Was passiert bei einem Preis oberhalb des Gleichgewichtspreises?","optionen":["Es entsteht ein Nachfrageüberhang.","Es entsteht ein Angebotsüberhang (Überschuss).","Angebot und Nachfrage bleiben unverändert.","Der Markt verschwindet."],"correct":1,"erklaerung":"Oberhalb des Gleichgewichtspreises wird mehr angeboten als nachgefragt – es entsteht ein Überschuss."},
+    {"id":"q25","block":"D","frage":"Steigt die Nachfrage bei unverändertem Angebot, dann …","optionen":["… sinken Preis und Menge.","… steigen Preis und Menge.","… bleibt der Preis gleich, nur die Menge steigt.","… steigt der Preis, die Menge sinkt."],"correct":1,"erklaerung":"Eine Rechtsverschiebung der Nachfragekurve führt bei gleichbleibendem Angebot zu einem höheren Preis und einer größeren Menge."},
+    {"id":"q26","block":"D","frage":"Sinkt das Angebot bei unveränderter Nachfrage, dann …","optionen":["… steigt der Preis, die Menge sinkt.","… sinken Preis und Menge.","… steigen Preis und Menge.","… bleibt der Preis unverändert."],"correct":0,"erklaerung":"Eine Linksverschiebung der Angebotskurve führt bei gleichbleibender Nachfrage zu einem höheren Preis und einer kleineren Menge."},
+    {"id":"q27","block":"D","frage":"Welche Aussage ist eine Prämisse des vollkommenen Marktes?","optionen":["Es gibt nur einen einzigen Anbieter.","Die Güter sind homogen (gleichartig).","Käufer verfügen über unterschiedlich gute Informationen.","Anbieter reagieren erst nach mehreren Wochen auf Preisänderungen."],"correct":1,"erklaerung":"Homogenität der Güter ist eine der klassischen Prämissen des vollkommenen Marktes – in der Realität oft nicht erfüllt."},
+    {"id":"q28","block":"D","frage":"Was beschreibt die Koordinationsfunktion des Marktes?","optionen":["Der Staat legt alle Preise zentral fest.","Preise stimmen Angebot und Nachfrage ohne zentrale Steuerung aufeinander ab.","Unternehmen einigen sich in Kartellen auf einen Preis.","Verbraucher entscheiden per Abstimmung über Preise."],"correct":1,"erklaerung":"Die Koordinationsfunktion beschreibt, wie der Preis Angebot und Nachfrage ganz ohne zentrale Steuerung ausgleicht."}
+  ]
+}
+
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var DATA = JSON.parse(document.getElementById("pruefung-data").textContent);
+  var GLOSSAR = DATA.glossar, FAELLE = DATA.faelle, QUIZ = DATA.quiz, KURS = DATA.kurs;
+  var BLOCK_COLOR = {A:"var(--s1)", B:"var(--s2)", C:"var(--s3)", D:"var(--s4)"};
+
+  var state = {
+    tab: "overview",
+    glossarQuery: "", glossarBlock: "ALL", glossarOnlyPractice: false,
+    faelleBlock: "ALL",
+    known: {}, caseDone: {}, flipped: {},
+    quiz: null // active quiz session
+  };
+
+  function esc(s){
+    return String(s==null?"":s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; });
+  }
+  function blockTitle(id){ for(var i=0;i<KURS.bloecke.length;i++) if(KURS.bloecke[i].id===id) return KURS.bloecke[i].titel; return id; }
+
+  function load(key, fallback){
+    try{ var raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }catch(e){ return fallback; }
+  }
+  function save(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
+  state.known = load("wr10-pruef-known", {});
+  state.caseDone = load("wr10-pruef-cases", {});
+  var bestScore = load("wr10-pruef-best", {});
+
+  // ================= TABS =================
+  function setTab(t){
+    state.tab = t;
+    document.querySelectorAll(".tab-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-tab")===t); });
+    render();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+  document.getElementById("tabs").addEventListener("click", function(e){
+    var b = e.target.closest(".tab-btn");
+    if(b) setTab(b.getAttribute("data-tab"));
+  });
+
+  function render(){
+    if(state.tab==="overview") renderOverview();
+    else if(state.tab==="glossar") renderGlossar();
+    else if(state.tab==="faelle") renderFaelle();
+    else if(state.tab==="quiz") renderQuiz();
+  }
+
+  // ================= OVERVIEW =================
+  function renderOverview(){
+    var knownCount = Object.keys(state.known).filter(function(k){return state.known[k]==="know";}).length;
+    var doneCount = Object.keys(state.caseDone).filter(function(k){return state.caseDone[k];}).length;
+    var best = bestScore.pct != null ? bestScore.pct + " %" : "–";
+
+    document.getElementById("main").innerHTML = ''
+    +'<div class="hero">'
+      +'<h1>Deine Prüfungsvorbereitung</h1>'
+      +'<p>Wiederhole hier selbstständig alle wichtigen Begriffe, übe an realistischen Fallbeispielen und teste dein Wissen im Quiz — zu allen vier Themenblöcken aus „'+esc(KURS.lernbereich)+'".</p>'
+    +'</div>'
+    +'<div class="stat-row">'
+      +'<button class="stat-tile" data-goto="glossar"><div class="n">'+knownCount+' / '+GLOSSAR.length+'</div><div class="l">Begriffe als „sicher" markiert</div><div class="p">→ Glossar öffnen</div></button>'
+      +'<button class="stat-tile" data-goto="faelle"><div class="n">'+doneCount+' / '+FAELLE.length+'</div><div class="l">Fallbeispiele bearbeitet</div><div class="p">→ Fallbeispiele öffnen</div></button>'
+      +'<button class="stat-tile" data-goto="quiz"><div class="n">'+best+'</div><div class="l">Bestes Quiz-Ergebnis</div><div class="p">→ Quiz starten</div></button>'
+    +'</div>'
+    +'<div class="card">'
+      +'<h2>So bereitest du dich am besten vor</h2>'
+      +'<div class="howto">'
+        +'<div class="howto-item"><b>1 · Glossar</b><span>Karteikarten zu allen '+GLOSSAR.length+' Fachbegriffen. Umdrehen, Definition lesen, ehrlich einschätzen: „sicher" oder „nochmal üben".</span></div>'
+        +'<div class="howto-item"><b>2 · Fallbeispiele</b><span>'+FAELLE.length+' realistische Aufgaben zur Prüfungsvorbereitung. Erst selbst lösen, dann die Musterlösung aufdecken.</span></div>'
+        +'<div class="howto-item"><b>3 · Quiz</b><span>'+QUIZ.length+' Multiple-Choice-Fragen mit sofortiger Erklärung. Wähle einen Themenblock oder teste alles auf einmal.</span></div>'
+      +'</div>'
+    +'</div>'
+    +'<div class="card">'
+      +'<h2>Themenblöcke</h2>'
+      +'<div style="display:flex; flex-direction:column; gap:8px;">'
+      + KURS.bloecke.map(function(b){
+          return '<div style="display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-2);"><span class="block-flag" style="background:'+BLOCK_COLOR[b.id]+'"></span><b style="color:var(--ink);">Block '+b.id+'</b> · '+esc(b.titel)+'</div>';
+        }).join("")
+      +'</div>'
+    +'</div>';
+
+    document.querySelectorAll("[data-goto]").forEach(function(el){
+      el.addEventListener("click", function(){ setTab(el.getAttribute("data-goto")); });
+    });
+  }
+
+  // ================= GLOSSAR =================
+  function glossarFiltered(){
+    return GLOSSAR.filter(function(g){
+      if(state.glossarBlock!=="ALL" && g.block!==state.glossarBlock) return false;
+      if(state.glossarOnlyPractice && state.known[g.id]==="know") return false;
+      if(state.glossarQuery){
+        var q = state.glossarQuery.toLowerCase();
+        if((g.begriff+" "+g.definition).toLowerCase().indexOf(q)===-1) return false;
+      }
+      return true;
+    });
+  }
+
+  function renderGlossar(){
+    var list = glossarFiltered();
+    var knownCount = Object.keys(state.known).filter(function(k){return state.known[k]==="know";}).length;
+
+    var chips = '<span class="chip'+(state.glossarBlock==="ALL"?" active":"")+'" data-block="ALL">Alle</span>'
+      + KURS.bloecke.map(function(b){
+          return '<span class="chip'+(state.glossarBlock===b.id?" active":"")+'" data-block="'+b.id+'"><span class="dot" style="background:'+(state.glossarBlock===b.id?"#fff":BLOCK_COLOR[b.id])+'"></span>'+b.id+'</span>';
+        }).join("");
+
+    var cardsHtml = list.map(function(g){
+      var rate = state.known[g.id];
+      return '<div class="flip-card" data-id="'+g.id+'">'
+        +'<div class="flip-inner">'
+          +'<div class="flip-face flip-front"><span class="block-flag" style="background:'+BLOCK_COLOR[g.block]+'"></span><span class="term">'+esc(g.begriff)+'</span><span class="hint">Tippen zum Umdrehen ↻</span></div>'
+          +'<div class="flip-face flip-back">'
+            +'<div class="def">'+esc(g.definition)+'</div>'
+            +'<div class="rate-row">'
+              +'<button class="rate-btn know'+(rate==="know"?" on":"")+'" data-rate="know" data-id="'+g.id+'">✓ Sicher</button>'
+              +'<button class="rate-btn practice'+(rate==="practice"?" on":"")+'" data-rate="practice" data-id="'+g.id+'">🔁 Üben</button>'
+            +'</div>'
+          +'</div>'
+        +'</div>'
+      +'</div>';
+    }).join("");
+
+    document.getElementById("main").innerHTML = ''
+    +'<div class="hero" style="padding-top:24px;"><h1 style="font-size:26px;">Glossar</h1><p>Klicke auf eine Karte, um die Definition zu sehen — und schätze anschließend ehrlich ein, ob du den Begriff schon sicher kannst.</p></div>'
+    +'<div class="progress-line">'+knownCount+' von '+GLOSSAR.length+' Begriffen als sicher markiert</div>'
+    +'<div class="filter-row">'
+      +'<input class="search" id="glossarSearch" type="text" placeholder="Begriff suchen …" value="'+esc(state.glossarQuery)+'">'
+      + chips
+      +'<button class="toggle-pill'+(state.glossarOnlyPractice?" on":"")+'" id="onlyPracticeBtn">Nur zu üben</button>'
+    +'</div>'
+    +'<div class="drill-launch"><button class="btn primary" id="drillBtn">🎯 Übungsmodus (einzelne Karten)</button></div>'
+    +'<div class="card-grid" id="cardGrid">'+(cardsHtml || '<p style="color:var(--ink-mute);">Keine Begriffe gefunden.</p>')+'</div>';
+
+    document.getElementById("glossarSearch").addEventListener("input", function(e){ state.glossarQuery = e.target.value; renderGlossar(); });
+    document.querySelectorAll(".chip[data-block]").forEach(function(c){
+      c.addEventListener("click", function(){ state.glossarBlock = c.getAttribute("data-block"); renderGlossar(); });
+    });
+    document.getElementById("onlyPracticeBtn").addEventListener("click", function(){ state.glossarOnlyPractice = !state.glossarOnlyPractice; renderGlossar(); });
+    document.getElementById("drillBtn").addEventListener("click", startDrill);
+
+    document.querySelectorAll(".flip-front, .flip-back").forEach(function(f){
+      f.addEventListener("click", function(e){
+        if(e.target.closest(".rate-btn")) return;
+        f.closest(".flip-card").classList.toggle("flipped");
+      });
+    });
+    document.querySelectorAll(".rate-btn").forEach(function(btn){
+      btn.addEventListener("click", function(e){
+        e.stopPropagation();
+        var id = btn.getAttribute("data-id"), rate = btn.getAttribute("data-rate");
+        state.known[id] = (state.known[id]===rate) ? undefined : rate;
+        if(state.known[id]===undefined) delete state.known[id];
+        save("wr10-pruef-known", state.known);
+        renderGlossar();
+      });
+    });
+  }
+
+  // ---- Drill (one-card-at-a-time practice) ----
+  function startDrill(){
+    var pool = glossarFiltered().slice();
+    if(pool.length===0) pool = GLOSSAR.slice();
+    // prioritize cards not yet marked "know"
+    pool.sort(function(a,b){
+      var av = state.known[a.id]==="know" ? 1 : 0;
+      var bv = state.known[b.id]==="know" ? 1 : 0;
+      return av-bv;
+    });
+    // light shuffle within same priority group
+    for(var i=pool.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=pool[i]; pool[i]=pool[j]; pool[j]=t; }
+    pool.sort(function(a,b){
+      var av = state.known[a.id]==="know" ? 1 : 0;
+      var bv = state.known[b.id]==="know" ? 1 : 0;
+      return av-bv;
+    });
+    var drillState = { cards: pool, idx: 0, flipped: false };
+    renderDrill(drillState);
+  }
+
+  function renderDrill(d){
+    var overlay = document.createElement("div");
+    overlay.className = "drill-overlay";
+    overlay.id = "drillOverlay";
+    document.body.appendChild(overlay);
+
+    function draw(){
+      if(d.idx >= d.cards.length){
+        overlay.innerHTML = '<div class="drill-box"><button class="drill-close" id="drillClose">✕</button>'
+          +'<div class="drill-done"><h2 style="margin:0 0 10px;">Runde geschafft! 🎉</h2><p style="color:var(--ink-2); font-size:14px;">Du hast '+d.cards.length+' Karten durchgesehen.</p>'
+          +'<button class="btn primary" id="drillRestart" style="margin-top:16px;">Nochmal von vorn</button></div></div>';
+        document.getElementById("drillClose").addEventListener("click", closeDrill);
+        document.getElementById("drillRestart").addEventListener("click", function(){ closeDrill(); startDrill(); });
+        return;
+      }
+      var g = d.cards[d.idx];
+      overlay.innerHTML = '<div class="drill-box"><button class="drill-close" id="drillClose">✕</button>'
+        +'<div class="drill-progress">Karte '+(d.idx+1)+' / '+d.cards.length+' · Block '+g.block+'</div>'
+        +'<div class="drill-card" id="drillCard"><div class="term">'+esc(g.begriff)+'</div>'
+        + (d.flipped ? '<div class="def">'+esc(g.definition)+'</div>' : '<div class="hint">Tippen, um die Definition zu zeigen</div>')
+        +'</div>'
+        + (d.flipped ? '<div class="drill-actions"><button class="btn" id="drillPractice">🔁 Nochmal üben</button><button class="btn primary" id="drillKnow">✓ Weiß ich sicher</button></div>' : '');
+      document.getElementById("drillClose").addEventListener("click", closeDrill);
+      document.getElementById("drillCard").addEventListener("click", function(){ d.flipped = true; draw(); });
+      var pb = document.getElementById("drillPractice");
+      var kb = document.getElementById("drillKnow");
+      if(pb) pb.addEventListener("click", function(){ state.known[g.id]="practice"; save("wr10-pruef-known", state.known); d.idx++; d.flipped=false; draw(); });
+      if(kb) kb.addEventListener("click", function(){ state.known[g.id]="know"; save("wr10-pruef-known", state.known); d.idx++; d.flipped=false; draw(); });
+    }
+    function closeDrill(){ overlay.remove(); renderGlossar(); }
+    draw();
+  }
+
+  // ================= FALLBEISPIELE =================
+  function faelleFiltered(){
+    return FAELLE.filter(function(f){ return state.faelleBlock==="ALL" || f.block===state.faelleBlock; });
+  }
+
+  function renderFaelle(){
+    var list = faelleFiltered();
+    var doneCount = Object.keys(state.caseDone).filter(function(k){return state.caseDone[k];}).length;
+
+    var chips = '<span class="chip'+(state.faelleBlock==="ALL"?" active":"")+'" data-block="ALL">Alle</span>'
+      + KURS.bloecke.map(function(b){
+          return '<span class="chip'+(state.faelleBlock===b.id?" active":"")+'" data-block="'+b.id+'"><span class="dot" style="background:'+(state.faelleBlock===b.id?"#fff":BLOCK_COLOR[b.id])+'"></span>'+b.id+'</span>';
+        }).join("");
+
+    var casesHtml = list.map(function(f){
+      var done = !!state.caseDone[f.id];
+      var open = !!state.flipped["case-"+f.id];
+      return '<div class="case-card">'
+        +'<div class="case-head">'
+          +'<div class="case-head-left"><span class="block-flag" style="background:'+BLOCK_COLOR[f.block]+'"></span><span class="case-title">'+esc(f.titel)+'</span></div>'
+          +'<button class="case-check'+(done?" on":"")+'" data-done="'+f.id+'" title="Als erledigt markieren"></button>'
+        +'</div>'
+        +'<div class="case-sit">'+esc(f.situation)+'</div>'
+        +'<div class="case-frage">'+esc(f.frage)+'</div>'
+        +'<button class="btn case-sol-btn" data-toggle="'+f.id+'">'+(open?"Lösung ausblenden":"Lösung anzeigen")+'</button>'
+        + (open ? '<div class="case-sol"><b>Musterlösung:</b> '+esc(f.loesung)+'</div>' : '')
+      +'</div>';
+    }).join("");
+
+    document.getElementById("main").innerHTML = ''
+    +'<div class="hero" style="padding-top:24px;"><h1 style="font-size:26px;">Fallbeispiele</h1><p>Lies die Situation, überlege dir selbst eine Antwort — und vergleiche sie erst danach mit der Musterlösung.</p></div>'
+    +'<div class="progress-line">'+doneCount+' von '+FAELLE.length+' Fallbeispielen bearbeitet</div>'
+    +'<div class="filter-row">'+ chips +'</div>'
+    +'<div>'+(casesHtml || '<p style="color:var(--ink-mute);">Keine Fallbeispiele gefunden.</p>')+'</div>';
+
+    document.querySelectorAll(".chip[data-block]").forEach(function(c){
+      c.addEventListener("click", function(){ state.faelleBlock = c.getAttribute("data-block"); renderFaelle(); });
+    });
+    document.querySelectorAll("[data-toggle]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var id = btn.getAttribute("data-toggle");
+        state.flipped["case-"+id] = !state.flipped["case-"+id];
+        renderFaelle();
+      });
+    });
+    document.querySelectorAll("[data-done]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var id = btn.getAttribute("data-done");
+        state.caseDone[id] = !state.caseDone[id];
+        save("wr10-pruef-cases", state.caseDone);
+        renderFaelle();
+      });
+    });
+  }
+
+  // ================= QUIZ =================
+  function shuffledIndices(n){
+    var arr = []; for(var i=0;i<n;i++) arr.push(i);
+    for(var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=arr[i]; arr[i]=arr[j]; arr[j]=t; }
+    return arr;
+  }
+
+  function renderQuiz(){
+    if(!state.quiz){ renderQuizSetup(); return; }
+    if(state.quiz.finished){ renderQuizResult(); return; }
+    renderQuizQuestion();
+  }
+
+  function renderQuizSetup(){
+    var blockCounts = {};
+    KURS.bloecke.forEach(function(b){ blockCounts[b.id] = QUIZ.filter(function(q){return q.block===b.id;}).length; });
+    var bestLine = bestScore.pct != null ? ('Bisher beste Runde: <b>'+bestScore.pct+' %</b> ('+bestScore.correct+'/'+bestScore.total+')') : 'Noch keine Runde gespielt.';
+
+    document.getElementById("main").innerHTML = ''
+    +'<div class="hero" style="padding-top:24px;"><h1 style="font-size:26px;">Quiz</h1><p>Teste dein Wissen mit Multiple-Choice-Fragen. Nach jeder Antwort bekommst du sofort eine kurze Erklärung.</p></div>'
+    +'<div class="card">'
+      +'<h2>Themenblock wählen</h2>'
+      +'<div class="quiz-setup">'
+        +'<div class="filter-row" style="margin:0;" id="quizBlockChips">'
+          +'<span class="chip active" data-block="ALL">Alle ('+QUIZ.length+')</span>'
+          + KURS.bloecke.map(function(b){ return '<span class="chip" data-block="'+b.id+'"><span class="dot" style="background:'+BLOCK_COLOR[b.id]+'"></span>Block '+b.id+' ('+blockCounts[b.id]+')</span>'; }).join("")
+        +'</div>'
+        +'<button class="btn primary" id="startQuizBtn" style="align-self:flex-start;">Quiz starten →</button>'
+        +'<p style="font-size:13px; color:var(--ink-mute); margin:0;">'+bestLine+'</p>'
+      +'</div>'
+    +'</div>';
+
+    var chosenBlock = "ALL";
+    document.querySelectorAll("#quizBlockChips .chip").forEach(function(c){
+      c.addEventListener("click", function(){
+        document.querySelectorAll("#quizBlockChips .chip").forEach(function(x){x.classList.remove("active");});
+        c.classList.add("active");
+        chosenBlock = c.getAttribute("data-block");
+      });
+    });
+    document.getElementById("startQuizBtn").addEventListener("click", function(){
+      var pool = QUIZ.filter(function(q){ return chosenBlock==="ALL" || q.block===chosenBlock; });
+      var order = shuffledIndices(pool.length).map(function(i){ return pool[i]; });
+      state.quiz = { questions: order, idx: 0, correctCount: 0, answered: null, finished: false, perBlock: {} };
+      KURS.bloecke.forEach(function(b){ state.quiz.perBlock[b.id] = {correct:0, total:0}; });
+      renderQuiz();
+    });
+  }
+
+  function renderQuizQuestion(){
+    var qz = state.quiz;
+    var q = qz.questions[qz.idx];
+    var pct = Math.round((qz.idx / qz.questions.length) * 100);
+
+    var optsHtml = q.optionen.map(function(opt, i){
+      return '<button class="quiz-opt" data-i="'+i+'">'+esc(opt)+'</button>';
+    }).join("");
+
+    document.getElementById("main").innerHTML = ''
+    +'<div class="quiz-q-wrap" style="padding-top:26px;">'
+      +'<div class="quiz-progress-track"><div class="quiz-progress-fill" style="width:'+pct+'%"></div></div>'
+      +'<div class="quiz-q-meta">Frage '+(qz.idx+1)+' / '+qz.questions.length+' · Block '+q.block+' · '+esc(blockTitle(q.block))+'</div>'
+      +'<div class="quiz-q-text">'+esc(q.frage)+'</div>'
+      +'<div id="quizOpts">'+optsHtml+'</div>'
+      +'<div id="quizExplainWrap"></div>'
+      +'<div class="quiz-next" id="quizNextWrap"></div>'
+    +'</div>';
+
+    document.querySelectorAll(".quiz-opt").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var i = +btn.getAttribute("data-i");
+        answerQuiz(q, i);
+      });
+    });
+  }
+
+  function answerQuiz(q, chosenIdx){
+    var qz = state.quiz;
+    var correct = chosenIdx === q.correct;
+    qz.perBlock[q.block].total++;
+    if(correct){ qz.correctCount++; qz.perBlock[q.block].correct++; }
+
+    document.querySelectorAll(".quiz-opt").forEach(function(btn, i){
+      btn.disabled = true;
+      if(i===q.correct) btn.classList.add("correct");
+      else if(i===chosenIdx) btn.classList.add("wrong");
+    });
+    document.getElementById("quizExplainWrap").innerHTML =
+      '<div class="quiz-explain"><b>'+(correct?"Richtig! ":"Nicht ganz. ")+'</b>'+esc(q.erklaerung)+'</div>';
+
+    var isLast = qz.idx === qz.questions.length-1;
+    document.getElementById("quizNextWrap").innerHTML =
+      '<button class="btn primary" id="quizNextBtn">'+(isLast ? "Ergebnis anzeigen →" : "Nächste Frage →")+'</button>';
+    document.getElementById("quizNextBtn").addEventListener("click", function(){
+      if(isLast){ finishQuiz(); } else { qz.idx++; renderQuizQuestion(); }
+    });
+  }
+
+  function finishQuiz(){
+    var qz = state.quiz;
+    qz.finished = true;
+    var pct = Math.round((qz.correctCount / qz.questions.length) * 100);
+    if(bestScore.pct == null || pct > bestScore.pct){
+      bestScore = { pct: pct, correct: qz.correctCount, total: qz.questions.length };
+      save("wr10-pruef-best", bestScore);
+    }
+    renderQuiz();
+  }
+
+  function renderQuizResult(){
+    var qz = state.quiz;
+    var pct = Math.round((qz.correctCount / qz.questions.length) * 100);
+    var msg = pct>=85 ? "Stark! Du bist gut auf die Prüfung vorbereitet." : pct>=60 ? "Gut, aber ein paar Themen lohnen sich noch zum Üben." : "Schau dir die betroffenen Themenblöcke noch einmal im Glossar an.";
+
+    var barsHtml = KURS.bloecke.map(function(b){
+      var pb = qz.perBlock[b.id];
+      if(!pb || pb.total===0) return "";
+      var p = Math.round((pb.correct/pb.total)*100);
+      return '<div class="block-bar-row"><div class="lbl">Block '+b.id+' · '+esc(b.titel)+'</div><div class="block-bar-track"><div class="block-bar-fill" style="width:'+p+'%; background:'+BLOCK_COLOR[b.id]+'"></div></div><div class="val">'+pb.correct+'/'+pb.total+'</div></div>';
+    }).join("");
+
+    document.getElementById("main").innerHTML = ''
+    +'<div class="quiz-q-wrap" style="padding-top:30px;">'
+      +'<div class="card quiz-result">'
+        +'<div class="score">'+pct+' %</div>'
+        +'<div class="score-label">'+qz.correctCount+' von '+qz.questions.length+' Fragen richtig</div>'
+        +'<p style="color:var(--ink-2); font-size:14.5px; max-width:44ch; margin:16px auto 0;">'+msg+'</p>'
+        +'<div class="block-bars">'+barsHtml+'</div>'
+        +'<div class="result-actions">'
+          +'<button class="btn" id="quizBackBtn">← Anderer Themenblock</button>'
+          +'<button class="btn primary" id="quizRetryBtn">Nochmal versuchen</button>'
+        +'</div>'
+      +'</div>'
+    +'</div>';
+
+    document.getElementById("quizBackBtn").addEventListener("click", function(){ state.quiz = null; renderQuiz(); });
+    document.getElementById("quizRetryBtn").addEventListener("click", function(){
+      var pool = qz.questions.slice();
+      var order = shuffledIndices(pool.length).map(function(i){ return pool[i]; });
+      state.quiz = { questions: order, idx: 0, correctCount: 0, answered: null, finished: false, perBlock: {} };
+      KURS.bloecke.forEach(function(b){ state.quiz.perBlock[b.id] = {correct:0, total:0}; });
+      renderQuiz();
+    });
+  }
+
+  // ================= INIT =================
+  document.addEventListener("DOMContentLoaded", function(){
+    setTab("overview");
+  });
+})();
+</script>
